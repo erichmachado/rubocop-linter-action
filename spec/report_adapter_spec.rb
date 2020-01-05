@@ -34,6 +34,53 @@ describe ReportAdapter do
         "message" => "Missing magic comment `# frozen_string_literal: true`. [Style/FrozenStringLiteralComment]"
       )
     end
+
+    context "when the start_column is larger than the end_column" do
+      let(:rubocop_report) do
+        Hash[
+          "metadata" => {
+            "rubocop_version" => "0.78.0",
+            "ruby_engine" => "ruby",
+            "ruby_version" => "2.6.5",
+            "ruby_patchlevel" => "114",
+            "ruby_platform" => "x86_64-darwin16"
+          },
+          "files" => [
+            {
+              "path" => "Rakefile",
+              "offenses" => [
+                {
+                  "severity" => "convention",
+                  "message" => "Layout/TrailingEmptyLines: Final newline missing.",
+                  "cop_name" => "Layout/TrailingEmptyLines",
+                  "corrected" => false,
+                  "correctable" => true,
+                  "location" => {
+                    "start_line" => 12,
+                    "start_column" => 4,
+                    "last_line" => 12,
+                    "last_column" => 3,
+                    "length" => 0,
+                    "line" => 12,
+                    "column" => 4
+                  }
+                }
+              ]
+            }
+          ],
+          "summary" => {
+            "offense_count" => 1,
+            "target_file_count" => 1,
+            "inspected_file_count" => 1
+          }
+        ]
+      end
+      subject(:annotations) { described_class.annotations(rubocop_report) }
+
+      it "sets the end_column to the same value as start_column" do
+        expect(annotations.first).to include("start_column" => 4, "end_column" => 4)
+      end
+    end
   end
 
   context "when error is not on the same line" do
