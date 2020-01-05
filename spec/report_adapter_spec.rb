@@ -3,8 +3,9 @@
 require "./spec/spec_helper"
 
 describe ReportAdapter do
+  subject { described_class }
+
   let(:rubocop_report) { JSON(File.read("./spec/fixtures/report.json")) }
-  subject { ReportAdapter }
 
   context "when exit code is 0" do
     it "succeedes" do
