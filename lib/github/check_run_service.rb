@@ -27,11 +27,22 @@ module Github
     end
 
     def update_check(id, last_result = nil)
-      annotations.each_slice(48) do |annotations_slice|
-        last_result = client.patch(
-          "#{endpoint_url}/#{id}",
-          update_check_payload(annotations_slice)
-        )
+      puts "Sending #{annotations.size} annotations to GitHub..."
+
+      annotations_slices = annotations.each_slice(50)
+      annotations_slices.each.with_index do |slice, index|
+        puts "Slice #{index + 1} contains #{slice.size} annotations"
+        if index + 1 == annotations_slices.size
+          last_result = client.patch(
+            "#{endpoint_url}/#{id}",
+            update_check_payload(slice).merge(conclusion: conclusion)
+          )
+        else
+          client.patch(
+            "#{endpoint_url}/#{id}",
+            update_check_payload(slice)
+          )
+        end
       end
       last_result
     end
@@ -58,20 +69,20 @@ module Github
 
     def base_payload(status)
       {
-        name: check_name,
-        head_sha: github_data.sha,
-        status: status,
-        started_at: Time.now.iso8601
+        status: status
       }
     end
 
     def create_check_payload
-      base_payload("in_progress")
+      base_payload("in_progress").merge(
+        name: check_name,
+        head_sha: github_data.sha,
+        started_at: Time.now.iso8601
+      )
     end
 
     def update_check_payload(annotations)
-      base_payload("completed").merge!(
-        conclusion: conclusion,
+      base_payload("in_progress").merge!(
         output: {
           title: check_name,
           summary: summary,
