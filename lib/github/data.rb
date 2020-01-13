@@ -12,6 +12,18 @@ module Github
       ENV["GITHUB_SHA"]
     end
 
+    def ref
+      ENV["GITHUB_REF"]
+    end
+
+    def head_ref
+      ENV["GITHUB_HEAD_REF"]
+    end
+
+    def base_ref
+      ENV["GITHUB_BASE_REF"]
+    end
+
     def token
       ENV["GITHUB_TOKEN"]
     end
