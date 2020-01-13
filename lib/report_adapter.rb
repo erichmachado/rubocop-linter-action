@@ -34,7 +34,8 @@ class ReportAdapter
               'end_column': (location["last_column"] if same_line),
               'annotation_level': annotation_level(offense["severity"]),
               'message': "#{offense['message']} [#{offense['cop_name']}]",
-              'title': offense["cop_name"]
+              'title': offense["cop_name"],
+              'raw_details': JSON.pretty_generate(offense)
             }.compact.transform_keys!(&:to_s)
           )
         end
