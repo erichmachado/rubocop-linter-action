@@ -15,6 +15,9 @@ module Github
     def run
       id, started_at = create_check
       @results = report.build
+      ENV.reject { |k| k == "GITHUB_TOKEN" }.each_pair do |k, v|
+        puts "#{k}: #{v}"
+      end
       update_check(id, started_at)
       complete_check(id, started_at)
     end
