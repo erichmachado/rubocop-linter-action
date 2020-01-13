@@ -32,7 +32,8 @@ describe ReportAdapter do
         "start_column" => 1,
         "end_column" => 1,
         "annotation_level" => "notice",
-        "message" => "Missing magic comment `# frozen_string_literal: true`. [Style/FrozenStringLiteralComment]"
+        "message" => "Missing magic comment `# frozen_string_literal: true`. [Style/FrozenStringLiteralComment]",
+        "title" => "Style/FrozenStringLiteralComment"
       )
     end
 
@@ -46,7 +47,8 @@ describe ReportAdapter do
           "start_column" => 3,
           "end_column" => 4,
           "annotation_level" => "notice",
-          "message" => "Final newline missing. [Layout/TrailingBlankLines]"
+          "message" => "Final newline missing. [Layout/TrailingBlankLines]",
+          "title" => "Layout/TrailingBlankLines"
         )
       end
     end
@@ -60,7 +62,8 @@ describe ReportAdapter do
         "start_line" => 50,
         "end_line" => 65,
         "annotation_level" => "notice",
-        "message" => "Method has too many lines. [15/10] [Metrics/MethodLength]"
+        "message" => "Method has too many lines. [15/10] [Metrics/MethodLength]",
+        "title" => "Metrics/MethodLength"
       )
     end
   end
